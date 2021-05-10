@@ -1,8 +1,6 @@
-/* eslint-disable no-console */
 import server from 'infra/server';
 import listen from 'infra/listen';
 import env from 'utils/env';
-
 
 const start = () =>
 	listen(server)
