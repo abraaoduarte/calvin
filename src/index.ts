@@ -13,8 +13,9 @@ import { listen } from 'infra/listen';
 
 const start = () => listen(server)
   .then(() => {
-    console.log(`PORT: ${3000}`);
+    console.log(`PORT: ${3001}`);
     console.log('SERVER STARTED');
+    console.log('SERVER STARTEDT');
   })
   .catch((error) => {
     console.error(error);

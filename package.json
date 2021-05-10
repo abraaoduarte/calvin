@@ -6,7 +6,8 @@
   "author": "Abraão Duarte <abraao.n.duarte@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start:dev": "nodemon"
+    "start:dev": "nodemon",
+    "build": "tsc --project './tsconfig.json'"
   },
   "dependencies": {
     "@types/node": "^15.0.2",
