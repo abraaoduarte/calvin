@@ -29,4 +29,4 @@ server.use(cors());
 // server.use(genericErrorHandler());
 // server.use(notFoundHandler());
 
-export { server };
+export default server;
