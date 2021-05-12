@@ -1,15 +1,17 @@
 import server from 'infra/server';
 import listen from 'infra/listen';
 import env from 'utils/env';
+import connection from 'infra/database/connection';
+import 'reflect-metadata';
 
-const start = () =>
-	listen(server)
-		.then(() => {
-			console.log(`PORT: ${env('PORT', 3001)}`);
-			console.log('SERVER STARTED');
-		})
-		.catch((error) => {
-			console.error(error);
-		});
+listen(server)
+	.then(async () => {
+		await connection;
 
-start();
+		console.log('Connected to database');
+		console.log(`PORT: ${env('PORT', '3001')}`);
+		console.log('SERVER STARTED');
+	})
+	.catch((error) => {
+		console.error(error);
+	});

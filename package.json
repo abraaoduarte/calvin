@@ -10,13 +10,18 @@
     "build": "tsc --project './tsconfig.json'",
     "lint": "eslint src",
     "lint:fix": "eslint --fix src",
-    "typecheck": "tsc --project tsconfig.json --noEmit"
+    "typecheck": "tsc --project tsconfig.json --noEmit",
+    "migration:create": "yarn run typeorm migration:create -n"
+
   },
   "dependencies": {
     "@types/node": "^15.0.2",
     "cors": "^2.8.5",
     "dotenv": "^9.0.2",
     "express": "^4.17.1",
+    "pg": "^8.6.0",
+    "reflect-metadata": "^0.1.13",
+    "typeorm": "^0.2.32",
     "typescript": "^4.2.4"
   },
   "devDependencies": {

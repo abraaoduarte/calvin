@@ -19,7 +19,8 @@
     ],
     "rules": {
         "@typescript-eslint/no-var-requires": "off",
-        "import/extensions": "off"
+        "import/extensions": "off",
+        "import/prefer-default-export": "off"
     },
     "settings": {
         "import/resolver": {
