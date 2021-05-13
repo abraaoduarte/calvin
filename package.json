@@ -11,8 +11,10 @@
     "lint": "eslint src",
     "lint:fix": "eslint --fix src",
     "typecheck": "tsc --project tsconfig.json --noEmit",
-    "migration:create": "yarn run typeorm migration:create -n"
-
+    "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
+    "migration:create": "yarn run typeorm migration:create -n",
+    "migration:run": "yarn typeorm -- migration:run",
+    "migration:revert": "yarn typeorm -- migration:revert"
   },
   "dependencies": {
     "@types/node": "^15.0.2",

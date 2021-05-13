@@ -6,7 +6,7 @@ import cors from 'cors';
 // import rateLimit from 'express-rate-limit';
 // import addRequestId from 'express-request-id';
 // import { genericErrorHandler, notFoundHandler } from 'app/middlewares';
-// import { api } from 'app/api';
+import { api } from 'app/api';
 
 const server = express();
 // const limiter = rateLimit({
@@ -18,14 +18,13 @@ const server = express();
 // });
 
 server.use(cors());
-
 // server.use(addRequestId());
 // server.use(limiter);
 // server.use(helmet());
 // server.use(morgan('tiny'));
 // server.use(bodyParser.urlencoded({ extended: false }));
 // server.use(bodyParser.json());
-// server.use(api);
+server.use(api);
 // server.use(genericErrorHandler());
 // server.use(notFoundHandler());
 
