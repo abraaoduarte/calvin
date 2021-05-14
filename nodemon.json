@@ -1,5 +1,6 @@
 {
     "watch": ["src"],
+    "delay": "1000",
     "ext": "ts,json,js",
     "exec": "ts-node-dev -r tsconfig-paths/register --respawn --transpile-only src/index.ts"
   }
