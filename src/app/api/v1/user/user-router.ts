@@ -5,6 +5,7 @@ const base = Router();
 const router = Router();
 
 router.get('/', controller.index);
+router.get('/:id', controller.create);
 
 base.use('/users', router);
 
