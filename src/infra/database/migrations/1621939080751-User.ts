@@ -25,6 +25,10 @@ export class User1621939080751 implements MigrationInterface {
 						isUnique: true,
 					},
 					{
+						name: 'password',
+						type: 'varchar',
+					},
+					{
 						name: 'is_active',
 						type: 'boolean',
 						default: true,

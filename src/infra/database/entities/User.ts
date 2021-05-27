@@ -11,6 +11,9 @@ export class User {
 	@Column({ type: 'varchar', unique: true })
 	email: string;
 
+	@Column({ type: 'varchar' })
+	password: string;
+
 	@Column({ type: 'boolean', name: 'is_active' })
 	isActive: boolean;
 
