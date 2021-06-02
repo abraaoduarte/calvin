@@ -5,7 +5,10 @@ const base = Router();
 const router = Router();
 
 router.get('/', controller.index);
-router.get('/:id', controller.create);
+router.get('/:uuid', controller.show);
+router.post('/', controller.create);
+router.patch('/:uuid', controller.update);
+router.delete('/:uuid', controller.destroy);
 
 base.use('/users', router);
 
