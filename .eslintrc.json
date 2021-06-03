@@ -20,7 +20,9 @@
     "rules": {
         "@typescript-eslint/no-var-requires": "off",
         "import/extensions": "off",
-        "import/prefer-default-export": "off"
+        "import/prefer-default-export": "off",
+        "@typescript-eslint/explicit-module-boundary-types": "off"
+
     },
     "settings": {
         "import/resolver": {

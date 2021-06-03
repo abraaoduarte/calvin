@@ -13,7 +13,7 @@ const env = (key: string, defaultValue?: DefaultValue): string => {
 		return valueWhenEmpty;
 	}
 
-	return value!;
+	return value;
 };
 
 export default env;

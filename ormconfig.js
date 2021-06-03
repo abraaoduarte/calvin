@@ -8,7 +8,7 @@ module.exports = {
 	password: process.env.DB_PASSWORD,
 	database: process.env.DB_NAME,
 	migrationsTableName: 'migrations',
-	entities: [path.resolve(process.cwd(), './src/infra/database/entity/*.ts')],
+	entities: [path.resolve(process.cwd(), './src/infra/database/entities/*.ts')],
 	migrations: [path.resolve(process.cwd(), './src/infra/database/migrations/*.ts')],
 	cli: {
 		migrationsDir: './src/infra/database/migrations',
