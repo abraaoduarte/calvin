@@ -2,6 +2,7 @@ import { getRepository } from 'typeorm';
 import { User } from 'infra/database/entities/User';
 import { isEmpty, isNil } from 'ramda';
 import { Request } from 'express';
+import CustomError from 'app/error/CustomError';
 
 export const index = async (): Promise<User[]> => {
 	const userRepository = getRepository(User);
@@ -20,6 +21,7 @@ export const show = async (uuid: string): Promise<User> => {
 };
 
 export const create = async ({ body }: Request): Promise<User> => {
+	throw new CustomError('TESTE', 402);
 	const userRepository = getRepository(User);
 
 	const user = userRepository.save({ ...body });
