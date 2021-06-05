@@ -1,6 +1,5 @@
-import { Request, Response } from 'express';
+import { Request } from 'express';
 import * as userRepository from 'domains/user/user-repository';
-import logger from 'utils/logger';
 import { wrap } from 'utils/wrap';
 
 export const index = wrap(() =>
@@ -12,37 +11,38 @@ export const index = wrap(() =>
 	}))
 );
 
-export const show = (req: Request, res: Response) =>
-	userRepository
-		.show(req.params.uuid)
-		.then((result) => {
-			res.send({ ...result });
-		})
-		.catch((error) => {
-			logger.error('error', error);
-			res.status(500).send({ error: error.message });
-		});
+export const show = wrap((req: Request) =>
+	userRepository.show(req.params.uuid).then((users) => ({
+		body: {
+			message: 'success',
+			result: users,
+		},
+	}))
+);
 
-export const create = wrap((req: Request) => userRepository.create(req));
+export const create = wrap((req: Request) =>
+	userRepository.create(req).then((users) => ({
+		body: {
+			message: 'success',
+			result: users,
+		},
+	}))
+);
 
-export const update = (req: Request, res: Response) =>
-	userRepository
-		.update(req)
-		.then((result) => {
-			res.send({ ...result });
-		})
-		.catch((error) => {
-			logger.error('error', error);
-			res.status(500).send({ error: error.message });
-		});
+export const update = wrap((req: Request) =>
+	userRepository.update(req).then((users) => ({
+		body: {
+			message: 'success',
+			result: users,
+		},
+	}))
+);
 
-export const destroy = (req: Request, res: Response) =>
-	userRepository
-		.destroy(req.params.uuid)
-		.then((result) => {
-			res.send({ ...result });
-		})
-		.catch((error) => {
-			logger.error('error', error);
-			res.status(500).send({ error: error.message });
-		});
+export const destroy = wrap((req: Request) =>
+	userRepository.destroy(req.params.uuid).then((users) => ({
+		body: {
+			message: 'success',
+			result: users,
+		},
+	}))
+);
