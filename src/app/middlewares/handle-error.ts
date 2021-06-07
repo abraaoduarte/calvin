@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { makeResponseHandler } from 'utils/make-response-handler';
 import logger from 'utils/logger';
 
-const handleError = () => (error, request: Request, response: Response, next: NextFunction) => {
+const handleError = () => (error, _: Request, response: Response, next: NextFunction) => {
 	const handler = makeResponseHandler(response);
 	logger.error(error);
 

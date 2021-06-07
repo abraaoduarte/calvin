@@ -2,10 +2,8 @@ import { getRepository } from 'typeorm';
 import { User } from 'infra/database/entities/User';
 import { isEmpty, isNil } from 'ramda';
 import { Request } from 'express';
-import { CustomError, NotFound } from 'app/error';
 
 export const index = async (): Promise<User[]> => {
-	throw new NotFound('Message teste');
 	const userRepository = getRepository(User);
 	const users = await userRepository.find();
 	return users;
