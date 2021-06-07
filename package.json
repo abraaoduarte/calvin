@@ -28,7 +28,9 @@
     "reflect-metadata": "^0.1.13",
     "typeorm": "^0.2.32",
     "typescript": "^4.2.4",
-    "winston": "^3.3.3"
+    "winston": "^3.3.3",
+    "yup": "^0.32.9",
+    "yup-locale-pt": "^0.0.8"
   },
   "devDependencies": {
     "@types/cors": "^2.8.10",
