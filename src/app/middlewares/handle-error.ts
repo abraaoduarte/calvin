@@ -11,6 +11,20 @@ const handleError = () => (error, _: Request, response: Response, next: NextFunc
 		return handler(error.response());
 	}
 
+	if (error.name === 'ValidationError' && error.value) {
+		logger.error('HANDLED_ERROR:', error.name);
+		return handler({
+			status: 400,
+			body: {
+				message: `Ocorreram ${error.errors.length} erros de validação. Corrija-os e tente novamente.`,
+				detail: {
+					errors: error.inner,
+					messages: error.errors,
+				},
+			},
+		});
+	}
+
 	logger.error('UNHANDLED_ERROR:', error.name);
 	return handler({
 		status: 500,
