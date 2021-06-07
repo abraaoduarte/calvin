@@ -8,15 +8,15 @@ const base = Router();
 const router = Router();
 
 router.get('/', controller.index);
-router.get('/:uuid', validate.params(makeUuidSchema('roleUuid'), {}), controller.show);
+router.get('/:uuid', validate.params(makeUuidSchema('uuid'), {}), controller.show);
 router.post('/', validate.body(CreateRoleSchema, {}), controller.create);
 router.patch(
 	'/:uuid',
-	validate.params(makeUuidSchema('roleUuid'), {}),
+	validate.params(makeUuidSchema('uuid'), {}),
 	validate.body(UpdateRoleSchema, { canBeEmpty: false }),
 	controller.update
 );
-router.delete('/:uuid', validate.params(makeUuidSchema('roleUuid'), {}), controller.destroy);
+router.delete('/:uuid', validate.params(makeUuidSchema('uuid'), {}), controller.destroy);
 
 base.use('/roles', router);
 
