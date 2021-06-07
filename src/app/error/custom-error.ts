@@ -1,6 +1,6 @@
 type StatusCode = string | number;
 
-class GeneralError extends Error {
+class CustomError extends Error {
 	statusCode: StatusCode;
 
 	constructor(message: string, status: StatusCode) {
@@ -10,4 +10,4 @@ class GeneralError extends Error {
 	}
 }
 
-export default GeneralError;
+export { CustomError };
