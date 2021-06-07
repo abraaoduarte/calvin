@@ -1,6 +1,6 @@
 import winston, { addColors, createLogger, transports } from 'winston';
 
-const { timestamp: datetime, combine, printf, errors, colorize } = winston.format;
+const { timestamp: datetime, combine, printf, errors, colorize, json } = winston.format;
 
 const levels = {
 	error: 0,
@@ -29,8 +29,9 @@ addColors(logColors);
 const logFormat = printf(({ level, message, timestamp, stack }) => `${timestamp} ${level}: ${stack || message}`);
 
 const format = combine(
+	colorize(),
+	json(),
 	datetime({ format: 'YYYY-MM-DD HH:mm:ss' }),
-	colorize({ all: true }),
 	errors({ stack: true }),
 	logFormat
 );
