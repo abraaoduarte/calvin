@@ -6,5 +6,4 @@ export const CreateRoleSchema = yup.object().shape({
 
 export const UpdateRoleSchema = yup.object().shape({
 	name: yup.string(),
-	permissions: yup.array().of(yup.string().uuid()),
 });
