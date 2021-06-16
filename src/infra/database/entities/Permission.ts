@@ -1,4 +1,15 @@
-import { Entity, PrimaryGeneratedColumn, Column, UpdateDateColumn, DeleteDateColumn, CreateDateColumn } from 'typeorm';
+import {
+	Entity,
+	PrimaryGeneratedColumn,
+	Column,
+	UpdateDateColumn,
+	DeleteDateColumn,
+	CreateDateColumn,
+	ManyToMany,
+	JoinTable,
+} from 'typeorm';
+import { Role } from './Role';
+import { User } from './User';
 
 @Entity('permissions')
 export class Permission {
@@ -19,4 +30,32 @@ export class Permission {
 
 	@DeleteDateColumn({ type: 'timestamp', name: 'deleted_at', nullable: true })
 	deletedAt: Date;
+
+	@ManyToMany(() => Role, (role) => role.permissions)
+	@JoinTable({
+		name: 'permission_role',
+		joinColumn: {
+			name: 'permission_id',
+			referencedColumnName: 'id',
+		},
+		inverseJoinColumn: {
+			name: 'role_id',
+			referencedColumnName: 'id',
+		},
+	})
+	roles: Role[];
+
+	@ManyToMany(() => User, (user) => user.permissions)
+	@JoinTable({
+		name: 'permission_user',
+		joinColumn: {
+			name: 'permission_id',
+			referencedColumnName: 'id',
+		},
+		inverseJoinColumn: {
+			name: 'user_id',
+			referencedColumnName: 'id',
+		},
+	})
+	users: User[];
 }

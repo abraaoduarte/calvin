@@ -5,7 +5,7 @@ import { Request } from 'express';
 
 export const index = async (): Promise<User[]> => {
 	const userRepository = getRepository(User);
-	const users = await userRepository.find();
+	const users = await userRepository.find({ relations: ['roles', 'permissions'] });
 	return users;
 };
 
