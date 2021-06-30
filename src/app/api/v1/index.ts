@@ -7,6 +7,7 @@ import { router as articleRouter } from './article/article-router';
 import { router as authorRouter } from './author/author-router';
 import { router as videoRouter } from './video/video-router';
 import { router as tagRouter } from './tag/tag-router';
+import { router as quoteRouter } from './quote/quote-router';
 
 const router = Router();
 
@@ -18,5 +19,6 @@ router.use('/v1', articleRouter);
 router.use('/v1', authorRouter);
 router.use('/v1', videoRouter);
 router.use('/v1', tagRouter);
+router.use('/v1', quoteRouter);
 
 export { router as v1 };
