@@ -24,10 +24,10 @@ export class Event {
 	@Column('text')
 	location: string;
 
-	@CreateDateColumn({ type: 'datetime', name: 'date_start' })
+	@CreateDateColumn({ type: 'timestamp', name: 'date_start' })
 	dateStart: Date;
 
-	@CreateDateColumn({ type: 'datetime', name: 'date_end' })
+	@CreateDateColumn({ type: 'timestamp', name: 'date_end' })
 	dateEnd: Date;
 
 	@OneToOne(() => User, (user) => user.id)

@@ -28,11 +28,11 @@ export class Event1625178950714 implements MigrationInterface {
 					},
 					{
 						name: 'date_start',
-						type: 'datetime',
+						type: 'timestamp',
 					},
 					{
 						name: 'date_end',
-						type: 'datetime',
+						type: 'timestamp',
 					},
 					{
 						name: 'user_id',
