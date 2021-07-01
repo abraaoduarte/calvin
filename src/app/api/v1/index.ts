@@ -9,6 +9,7 @@ import { router as videoRouter } from './video/video-router';
 import { router as tagRouter } from './tag/tag-router';
 import { router as quoteRouter } from './quote/quote-router';
 import { router as prayerRequest } from './prayer-request/prayer-request-router';
+import { router as eventRequest } from './event/event-router';
 
 const router = Router();
 
@@ -22,5 +23,6 @@ router.use('/v1', videoRouter);
 router.use('/v1', tagRouter);
 router.use('/v1', quoteRouter);
 router.use('/v1', prayerRequest);
+router.use('/v1', eventRequest);
 
 export { router as v1 };
