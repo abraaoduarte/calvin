@@ -8,8 +8,9 @@ import { router as authorRouter } from './author/author-router';
 import { router as videoRouter } from './video/video-router';
 import { router as tagRouter } from './tag/tag-router';
 import { router as quoteRouter } from './quote/quote-router';
-import { router as prayerRequest } from './prayer-request/prayer-request-router';
-import { router as eventRequest } from './event/event-router';
+import { router as prayerRouter } from './prayer-request/prayer-request-router';
+import { router as eventRouter } from './event/event-router';
+import { router as photoRouter } from './photo/photo-router';
 
 const router = Router();
 
@@ -22,7 +23,8 @@ router.use('/v1', authorRouter);
 router.use('/v1', videoRouter);
 router.use('/v1', tagRouter);
 router.use('/v1', quoteRouter);
-router.use('/v1', prayerRequest);
-router.use('/v1', eventRequest);
+router.use('/v1', prayerRouter);
+router.use('/v1', eventRouter);
+router.use('/v1', photoRouter);
 
 export { router as v1 };
