@@ -12,6 +12,7 @@ import { router as prayerRouter } from './prayer-request/prayer-request-router';
 import { router as eventRouter } from './event/event-router';
 import { router as photoRouter } from './photo/photo-router';
 import { router as bankDetailRouter } from './bank-detail/bank-detail-router';
+import { router as bannerDetail } from './banner/banner-router';
 
 const router = Router();
 
@@ -28,5 +29,6 @@ router.use('/v1', prayerRouter);
 router.use('/v1', eventRouter);
 router.use('/v1', photoRouter);
 router.use('/v1', bankDetailRouter);
+router.use('/v1', bannerDetail);
 
 export { router as v1 };
