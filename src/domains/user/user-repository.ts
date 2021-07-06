@@ -3,14 +3,6 @@ import { User } from 'infra/database/entities/User';
 import { isEmpty, isNil, omit } from 'ramda';
 import { Request } from 'express';
 import { BadRequest } from 'app/error';
-import bcrypt from 'bcrypt';
-
-const generateHash = (password: string) => {
-	const saltRounds = 10;
-	const salt = bcrypt.genSaltSync(saltRounds);
-	const hash = bcrypt.hashSync(password, salt);
-	return hash;
-};
 
 export const index = async (): Promise<User[]> => {
 	const userRepository = getRepository(User);
@@ -39,7 +31,7 @@ export const findByEmail = async (email: string): Promise<User> => {
 export const create = async ({ body }: Request): Promise<User> => {
 	const userRepository = getRepository(User);
 
-	const { email, password } = body;
+	const { email } = body;
 
 	const userByEmail = await findByEmail(email);
 
@@ -49,9 +41,9 @@ export const create = async ({ body }: Request): Promise<User> => {
 		throw new BadRequest('Este email já está sendo utilizado.');
 	}
 
-	const passwordEncrypted = generateHash(password);
+	const newUser = userRepository.create({ ...body } as User);
 
-	const user = await userRepository.save({ ...omit(['passwordConfirmation'], body), password: passwordEncrypted });
+	const user = await userRepository.save(newUser);
 
 	return omit(['password'], user);
 };

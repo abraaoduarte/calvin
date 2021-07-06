@@ -7,8 +7,9 @@ import {
 	CreateDateColumn,
 	ManyToMany,
 	JoinTable,
+	BeforeInsert,
 } from 'typeorm';
-
+import bcrypt from 'bcrypt';
 import { Permission } from './Permission';
 import { Role } from './Role';
 @Entity('users')
@@ -39,6 +40,14 @@ export class User {
 
 	@DeleteDateColumn({ type: 'timestamp', name: 'deleted_at', nullable: true })
 	deletedAt: Date;
+
+	@BeforeInsert()
+	hashPassword() {
+		const saltRounds = 10;
+		const salt = bcrypt.genSaltSync(saltRounds);
+		const hash = bcrypt.hashSync(this.password, salt);
+		this.password = hash;
+	}
 
 	@ManyToMany(() => Permission, (permission) => permission.users)
 	@JoinTable({
