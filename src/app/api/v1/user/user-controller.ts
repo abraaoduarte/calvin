@@ -21,10 +21,10 @@ export const show = wrap((req: Request) =>
 );
 
 export const create = wrap((req: Request) =>
-	userRepository.create(req).then((users) => ({
+	userRepository.create(req).then((user) => ({
 		body: {
 			message: 'success',
-			result: users,
+			result: user,
 		},
 	}))
 );

@@ -1,7 +1,16 @@
 import { getRepository } from 'typeorm';
 import { User } from 'infra/database/entities/User';
-import { isEmpty, isNil } from 'ramda';
+import { isEmpty, isNil, omit } from 'ramda';
 import { Request } from 'express';
+import { BadRequest } from 'app/error';
+import bcrypt from 'bcrypt';
+
+const generateHash = (password: string) => {
+	const saltRounds = 10;
+	const salt = bcrypt.genSaltSync(saltRounds);
+	const hash = bcrypt.hashSync(password, salt);
+	return hash;
+};
 
 export const index = async (): Promise<User[]> => {
 	const userRepository = getRepository(User);
@@ -19,12 +28,32 @@ export const show = async (uuid: string): Promise<User> => {
 	return user;
 };
 
+export const findByEmail = async (email: string): Promise<User> => {
+	const userRepository = getRepository(User);
+
+	const user = userRepository.findOne({ email });
+
+	return user;
+};
+
 export const create = async ({ body }: Request): Promise<User> => {
 	const userRepository = getRepository(User);
 
-	const user = userRepository.save({ ...body });
+	const { email, password } = body;
 
-	return user;
+	const userByEmail = await findByEmail(email);
+
+	const emailBeingUsed = isNil(userByEmail) || isEmpty(userByEmail);
+
+	if (!emailBeingUsed) {
+		throw new BadRequest('Este email já está sendo utilizado.');
+	}
+
+	const passwordEncrypted = generateHash(password);
+
+	const user = await userRepository.save({ ...omit(['passwordConfirmation'], body), password: passwordEncrypted });
+
+	return omit(['password'], user);
 };
 
 export const update = async ({ body, params }: Request): Promise<User> => {

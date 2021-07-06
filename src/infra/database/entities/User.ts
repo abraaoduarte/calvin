@@ -23,7 +23,7 @@ export class User {
 	email: string;
 
 	@Column({ type: 'varchar' })
-	password: string;
+	password?: string;
 
 	@Column({ type: 'boolean', name: 'is_active' })
 	isActive: boolean;
