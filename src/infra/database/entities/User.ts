@@ -8,6 +8,7 @@ import {
 	ManyToMany,
 	JoinTable,
 	BeforeInsert,
+	BeforeUpdate,
 } from 'typeorm';
 import bcrypt from 'bcrypt';
 import { Permission } from './Permission';
@@ -42,11 +43,14 @@ export class User {
 	deletedAt: Date;
 
 	@BeforeInsert()
+	@BeforeUpdate()
 	hashPassword() {
-		const saltRounds = 10;
-		const salt = bcrypt.genSaltSync(saltRounds);
-		const hash = bcrypt.hashSync(this.password, salt);
-		this.password = hash;
+		if (this.password) {
+			const saltRounds = 10;
+			const salt = bcrypt.genSaltSync(saltRounds);
+			const hash = bcrypt.hashSync(this.password, salt);
+			this.password = hash;
+		}
 	}
 
 	@ManyToMany(() => Permission, (permission) => permission.users)
