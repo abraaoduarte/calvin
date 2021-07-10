@@ -2,7 +2,7 @@ import { getRepository } from 'typeorm';
 import { User } from 'infra/database/entities/User';
 import { isEmpty, isNil, omit } from 'ramda';
 import { Request } from 'express';
-import { BadRequest, CustomError } from 'app/error';
+import { BadRequest } from 'app/error';
 
 export const index = async (): Promise<User[]> => {
 	const userRepository = getRepository(User);
