@@ -11,8 +11,10 @@ import {
 	BeforeUpdate,
 } from 'typeorm';
 import bcrypt from 'bcrypt';
+import env from 'utils/env';
 import { Permission } from './Permission';
 import { Role } from './Role';
+
 @Entity('users')
 export class User {
 	@PrimaryGeneratedColumn('uuid')
@@ -46,7 +48,7 @@ export class User {
 	@BeforeUpdate()
 	hashPassword() {
 		if (this.password) {
-			const saltRounds = 10;
+			const saltRounds = env('SALT_ROUNDS');
 			const salt = bcrypt.genSaltSync(saltRounds);
 			const hash = bcrypt.hashSync(this.password, salt);
 			this.password = hash;
