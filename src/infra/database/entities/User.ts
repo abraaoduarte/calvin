@@ -7,10 +7,14 @@ import {
 	CreateDateColumn,
 	ManyToMany,
 	JoinTable,
+	BeforeInsert,
+	BeforeUpdate,
 } from 'typeorm';
-
+import bcrypt from 'bcrypt';
+import env from 'utils/env';
 import { Permission } from './Permission';
 import { Role } from './Role';
+
 @Entity('users')
 export class User {
 	@PrimaryGeneratedColumn('uuid')
@@ -23,7 +27,7 @@ export class User {
 	email: string;
 
 	@Column({ type: 'varchar' })
-	password: string;
+	password?: string;
 
 	@Column({ type: 'boolean', name: 'is_active' })
 	isActive: boolean;
@@ -39,6 +43,17 @@ export class User {
 
 	@DeleteDateColumn({ type: 'timestamp', name: 'deleted_at', nullable: true })
 	deletedAt: Date;
+
+	@BeforeInsert()
+	@BeforeUpdate()
+	hashPassword() {
+		if (this.password) {
+			const saltRounds = env('SALT_ROUNDS');
+			const salt = bcrypt.genSaltSync(saltRounds);
+			const hash = bcrypt.hashSync(this.password, salt);
+			this.password = hash;
+		}
+	}
 
 	@ManyToMany(() => Permission, (permission) => permission.users)
 	@JoinTable({
