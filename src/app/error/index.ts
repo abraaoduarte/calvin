@@ -1,3 +1,4 @@
 export { CustomError } from './custom-error';
 export { NotFound } from './not-found';
 export { BadRequest } from './bad-request';
+export { Unauthorized } from './unauthorized';
