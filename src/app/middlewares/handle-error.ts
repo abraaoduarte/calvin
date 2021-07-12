@@ -2,7 +2,16 @@ import { Request, Response, NextFunction } from 'express';
 import { makeResponseHandler } from 'utils/make-response-handler';
 import logger from 'utils/logger';
 
-const handleError = () => (error, _: Request, response: Response, next: NextFunction) => {
+const unauthorizedCodes = {
+	credentials_bad_scheme: 'O formato do header deve ser: Authorization: Bearer [token]',
+	credentials_bad_format: 'O formato do header deve ser: Authorization: Bearer [token]',
+	credentials_required: 'Token necessário para acessar esta url',
+	invalid_token: 'Token inválido',
+	revoked_token: 'O token enviado foi revogado',
+};
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const handleError = () => (error, request: Request, response: Response, _: NextFunction) => {
 	const handler = makeResponseHandler(response);
 	logger.error(error);
 
@@ -20,6 +29,21 @@ const handleError = () => (error, _: Request, response: Response, next: NextFunc
 				detail: {
 					errors: error.inner,
 					messages: error.errors,
+				},
+			},
+		});
+	}
+
+	if (error.name === 'UnauthorizedError') {
+		logger.error('HANDLED_ERROR:', 'UnauthorizedError');
+		return handler({
+			status: 401,
+			body: {
+				message: unauthorizedCodes[error.code] || 'Não foi possível autenticar esta requisição',
+				detail: {
+					hostname: request.hostname,
+					originalUrl: request.originalUrl,
+					method: request.method,
 				},
 			},
 		});

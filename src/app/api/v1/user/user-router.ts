@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { CreateUserSchema, UpdateUserSchema } from 'domains/user/user-schema';
-import { validate } from 'app/middlewares/validate';
+import { auth, validate } from 'app/middlewares';
 import { makeUuidSchema } from 'domains/common/common-schema';
 import * as controller from './user-controller';
 
@@ -13,6 +13,6 @@ router.post('/', validate.body(CreateUserSchema), controller.create);
 router.patch('/:uuid', validate.params(makeUuidSchema('uuid')), validate.body(UpdateUserSchema), controller.update);
 router.delete('/:uuid', controller.destroy);
 
-base.use('/users', router);
+base.use('/users', auth(), router);
 
 export { base as router };

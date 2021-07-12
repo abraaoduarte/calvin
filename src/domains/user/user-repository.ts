@@ -2,7 +2,7 @@ import { getRepository } from 'typeorm';
 import { User } from 'infra/database/entities/User';
 import { isEmpty, isNil, omit } from 'ramda';
 import { Request } from 'express';
-import { BadRequest } from 'app/error';
+import { BadRequest, NotFound } from 'app/error';
 
 export const index = async (): Promise<User[]> => {
 	const userRepository = getRepository(User);
@@ -15,7 +15,7 @@ export const show = async (uuid: string): Promise<User> => {
 	const user = await userRepository.findOne(uuid);
 
 	if (isNil(user) || isEmpty(user)) {
-		throw new Error('User not found');
+		throw new NotFound('User not found');
 	}
 	return user;
 };
@@ -70,4 +70,15 @@ export const destroy = async (uuid: string): Promise<User> => {
 	const user = await userRepository.softDelete(uuid);
 
 	return user.raw[0];
+};
+
+export const findUserByUuid = async (uuid: string) => {
+	const userRepository = getRepository(User);
+
+	const user = await userRepository.findOne({ id: uuid });
+
+	if (isNil(user) || isEmpty(user)) {
+		throw new NotFound('User not found');
+	}
+	return user;
 };
