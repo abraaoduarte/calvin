@@ -49,7 +49,7 @@ export class User {
 	hashPassword() {
 		if (this.password) {
 			const saltRounds = env('SALT_ROUNDS');
-			const salt = bcrypt.genSaltSync(saltRounds);
+			const salt = bcrypt.genSaltSync(Number(saltRounds));
 			const hash = bcrypt.hashSync(this.password, salt);
 			this.password = hash;
 		}
