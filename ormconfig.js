@@ -10,6 +10,7 @@ module.exports = {
 	migrationsTableName: 'migrations',
 	entities: [path.resolve(process.cwd(), './src/infra/database/entities/*.ts')],
 	migrations: [path.resolve(process.cwd(), './src/infra/database/migrations/*.ts')],
+	seeds: [path.resolve(process.cwd(), './src/infra/database/seeds/**/*{.ts,.js}')],
 	cli: {
 		migrationsDir: './src/infra/database/migrations',
 	},

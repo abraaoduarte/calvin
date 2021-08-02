@@ -67,6 +67,7 @@ export const update = async ({ body, params }: Request): Promise<User> => {
 
 export const destroy = async (uuid: string): Promise<User> => {
 	const userRepository = getRepository(User);
+
 	const user = await userRepository.softDelete(uuid);
 
 	return user.raw[0];
