@@ -5,7 +5,16 @@ import { Request } from 'express';
 import { ParsedQs } from 'qs';
 import pagination from 'utils/pagination';
 import { RepositoryList } from 'types';
-import { NotFound } from 'app/error';
+import { BadRequest, NotFound } from 'app/error';
+import { CustomRequest } from 'types/CustomRequest';
+
+export const findBySlug = async (slug: string): Promise<Article> => {
+	const articleRepository = getRepository(Article);
+
+	const article = articleRepository.findOne({ slug });
+
+	return article;
+};
 
 export const index = async (query: ParsedQs): Promise<RepositoryList<Article[]>> => {
 	const { page, limit, currentPage } = pagination(query);
@@ -38,31 +47,52 @@ export const show = async (uuid: string): Promise<Article> => {
 	return article;
 };
 
-// TODO: Refactor create
-export const create = async ({ body }: Request): Promise<Article> => {
+export const create = async (request: CustomRequest): Promise<Article> => {
 	const articleRepository = getRepository(Article);
 
-	const article = articleRepository.save({ ...body });
+	const { body } = request;
+
+	const { slug } = body;
+
+	const articleBySlug = await findBySlug(slug);
+
+	const emailBeingUsed = isNil(articleBySlug) || isEmpty(articleBySlug);
+	if (!emailBeingUsed) {
+		throw new BadRequest('This slug is already being used.');
+	}
+
+	const userId = request.payload.data.user;
+
+	const newArticle = articleRepository.create({ ...body, user: userId } as Article);
+
+	const article = await articleRepository.save(newArticle);
 
 	return article;
 };
 
-// TODO: Refactor
-export const update = async ({ body, params }: Request): Promise<Article> => {
-	const articleRepository = getRepository(Article);
-	const article = await articleRepository
-		.createQueryBuilder()
-		.update({ ...body })
-		.where({ id: params.uuid })
-		.returning('*')
-		.updateEntity(true)
-		.execute();
+export const update = async ({ body, params, payload }: CustomRequest): Promise<Article> => {
+	const { slug } = body;
 
-	return article.raw[0];
+	const articleRepository = getRepository(Article);
+
+	const articleBySlug = await findBySlug(slug);
+
+	if (!isNil(articleBySlug) && articleBySlug.id !== params.uuid) {
+		throw new BadRequest('This slug is already being used.');
+	}
+
+	const userId = payload.data.user;
+
+	const updatedArticle = articleRepository.create({ ...body, id: params.uuid, user: userId } as Article);
+
+	const article = await articleRepository.save(updatedArticle);
+
+	return article;
 };
 
 export const destroy = async (uuid: string): Promise<Article> => {
 	const articleRepository = getRepository(Article);
+
 	const article = await articleRepository.softDelete(uuid);
 
 	return article.raw[0];

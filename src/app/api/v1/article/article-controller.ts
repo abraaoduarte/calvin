@@ -1,6 +1,7 @@
 import { Request } from 'express';
 import * as articleRepository from 'domains/article/article-repository';
 import { wrap } from 'utils/wrap';
+import { CustomRequest } from 'types/CustomRequest';
 
 export const index = wrap((req: Request) =>
 	articleRepository.index(req.query).then((articles) => ({
@@ -20,7 +21,7 @@ export const show = wrap((req: Request) =>
 	}))
 );
 
-export const create = wrap((req: Request) =>
+export const create = wrap((req: CustomRequest) =>
 	articleRepository.create(req).then((article) => ({
 		body: {
 			message: 'success',
@@ -29,7 +30,7 @@ export const create = wrap((req: Request) =>
 	}))
 );
 
-export const update = wrap((req: Request) =>
+export const update = wrap((req: CustomRequest) =>
 	articleRepository.update(req).then((article) => ({
 		body: {
 			message: 'success',

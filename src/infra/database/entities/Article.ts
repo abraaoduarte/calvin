@@ -32,7 +32,7 @@ export class Article {
 	})
 	status: ArticleStatus;
 
-	@OneToOne(() => User, (user) => user.id)
+	@OneToOne(() => User, (user) => user)
 	@JoinColumn({ name: 'user_id' })
 	user: User;
 

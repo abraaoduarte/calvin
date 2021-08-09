@@ -37,7 +37,7 @@ export const create = async ({ body }: Request): Promise<User> => {
 
 	const emailBeingUsed = isNil(userByEmail) || isEmpty(userByEmail);
 	if (!emailBeingUsed) {
-		throw new BadRequest('Este email já está sendo utilizado.');
+		throw new BadRequest('This email is already being used.');
 	}
 
 	const newUser = userRepository.create({ ...body } as User);
@@ -55,7 +55,7 @@ export const update = async ({ body, params }: Request): Promise<User> => {
 	const userByEmail = await findByEmail(email);
 
 	if (!isNil(userByEmail) && userByEmail.id !== params.uuid) {
-		throw new BadRequest('Este email já está sendo utilizado.');
+		throw new BadRequest('This email is already being used.');
 	}
 
 	const updatedUser = userRepository.create({ ...body, id: params.uuid } as User);
