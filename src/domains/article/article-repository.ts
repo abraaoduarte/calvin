@@ -1,7 +1,6 @@
 import { getRepository } from 'typeorm';
 import { Article } from 'infra/database/entities/Article';
 import { isEmpty, isNil } from 'ramda';
-import { Request } from 'express';
 import { ParsedQs } from 'qs';
 import pagination from 'utils/pagination';
 import { RepositoryList } from 'types';

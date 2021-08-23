@@ -8,6 +8,7 @@ import {
 	OneToOne,
 	JoinColumn,
 } from 'typeorm';
+import { Author } from './Author';
 import { User } from './User';
 
 export type ArticleStatus = 'draft' | 'published';
@@ -35,6 +36,10 @@ export class Article {
 	@OneToOne(() => User, (user) => user)
 	@JoinColumn({ name: 'user_id' })
 	user: User;
+
+	@OneToOne(() => Author, (author) => author)
+	@JoinColumn({ name: 'author_id' })
+	author: Author;
 
 	@CreateDateColumn({ type: 'timestamp', name: 'created_at' })
 	createdAt: Date;

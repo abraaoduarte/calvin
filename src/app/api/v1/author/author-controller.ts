@@ -1,12 +1,13 @@
 import { Request } from 'express';
 import * as authorRepository from 'domains/author/author-repository';
 import { wrap } from 'utils/wrap';
+import { CustomRequest } from 'types/CustomRequest';
 
 export const index = wrap(() =>
-	authorRepository.index().then((authors) => ({
+	authorRepository.index().then((author) => ({
 		body: {
 			message: 'success',
-			result: authors,
+			result: author,
 		},
 	}))
 );
@@ -20,29 +21,28 @@ export const show = wrap((req: Request) =>
 	}))
 );
 
-export const create = wrap((req: Request) =>
-	authorRepository.create(req).then((authors) => ({
+export const create = wrap((req: CustomRequest) =>
+	authorRepository.create(req).then((author) => ({
 		body: {
 			message: 'success',
-			result: authors,
+			result: author,
 		},
 	}))
 );
 
-export const update = wrap((req: Request) =>
-	authorRepository.update(req).then((authors) => ({
+export const update = wrap((req: CustomRequest) =>
+	authorRepository.update(req).then((author) => ({
 		body: {
 			message: 'success',
-			result: authors,
+			result: author,
 		},
 	}))
 );
 
 export const destroy = wrap((req: Request) =>
-	authorRepository.destroy(req.params.uuid).then((authors) => ({
+	authorRepository.destroy(req.params.uuid).then(() => ({
 		body: {
 			message: 'success',
-			result: authors,
 		},
 	}))
 );

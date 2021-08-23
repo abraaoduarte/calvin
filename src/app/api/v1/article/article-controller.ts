@@ -40,10 +40,9 @@ export const update = wrap((req: CustomRequest) =>
 );
 
 export const destroy = wrap((req: Request) =>
-	articleRepository.destroy(req.params.uuid).then((article) => ({
+	articleRepository.destroy(req.params.uuid).then(() => ({
 		body: {
 			message: 'success',
-			result: article,
 		},
 	}))
 );
