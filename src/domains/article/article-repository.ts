@@ -46,6 +46,7 @@ export const show = async (uuid: string): Promise<Article> => {
 	return article;
 };
 
+// TODO: Enable create tag here and do all the logic
 export const create = async (request: CustomRequest): Promise<Article> => {
 	const articleRepository = getRepository(Article);
 

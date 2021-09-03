@@ -6,6 +6,9 @@ export const CreateArticleSchema = yup.object().shape({
 	status: yup.string().required(),
 	body: yup.string().required(),
 	author_id: yup.string().uuid().required(),
+	tags: yup.array()
+		.min(1, "Você não pode deixar este campo em branco.")
+		.required()
 });
 
 export const UpdateArticleSchema = yup.object().shape({
@@ -14,4 +17,7 @@ export const UpdateArticleSchema = yup.object().shape({
 	status: yup.string().required(),
 	body: yup.string().required(),
 	author_id: yup.string().uuid().required(),
+	tags: yup.array()
+		.min(1, "Você não pode deixar este campo em branco.")
+		.required()
 });
