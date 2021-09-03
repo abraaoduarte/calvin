@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { CreateQuoteSchema, UpdateQuoteSchema } from 'domains/quote/quote-schema';
-import { validate } from 'app/middlewares/validate';
+import { validate, auth } from 'app/middlewares';
 import { makeUuidSchema } from 'domains/common/common-schema';
 import * as controller from './quote-controller';
 
@@ -18,6 +18,6 @@ router.patch(
 );
 router.delete('/:uuid', validate.params(makeUuidSchema('uuid')), controller.destroy);
 
-base.use('/quotes', router);
+base.use('/quotes', auth(), router);
 
 export { base as router };

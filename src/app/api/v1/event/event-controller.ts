@@ -2,13 +2,14 @@ import { Request } from 'express';
 import * as eventRepository from 'domains/event/event-repository';
 import { wrap } from 'utils/wrap';
 
-export const index = wrap(() =>
-	eventRepository.index().then((event) => ({
-		body: {
-			message: 'success',
-			result: event,
-		},
-	}))
+export const index = wrap((req: Request) =>
+	eventRepository.index(req.query).then((events) => ({
+			body: {
+				message: 'success',
+				...events,
+			},
+		})
+	)
 );
 
 export const show = wrap((req: Request) =>

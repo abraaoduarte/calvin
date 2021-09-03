@@ -2,13 +2,14 @@ import { Request } from 'express';
 import * as prayerRequestRepository from 'domains/tag/tag-repository';
 import { wrap } from 'utils/wrap';
 
-export const index = wrap(() =>
-	prayerRequestRepository.index().then((prayerRequests) => ({
-		body: {
-			message: 'success',
-			result: prayerRequests,
-		},
-	}))
+export const index = wrap((req: Request) =>
+	prayerRequestRepository.index(req.query).then((prayerRequests) => ({
+			body: {
+				message: 'success',
+				...prayerRequests,
+			},
+		})
+	)
 );
 
 export const show = wrap((req: Request) =>

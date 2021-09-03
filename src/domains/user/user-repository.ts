@@ -3,11 +3,27 @@ import { User } from 'infra/database/entities/User';
 import { isEmpty, isNil, omit } from 'ramda';
 import { Request } from 'express';
 import { BadRequest, NotFound } from 'app/error';
+import pagination from 'utils/pagination';
+import { ParsedQs } from 'qs';
+import { RepositoryList } from 'types';
 
-export const index = async (): Promise<User[]> => {
+export const index = async (query: ParsedQs): Promise<RepositoryList<User[]>> => {
+	const { page, limit, currentPage } = pagination(query);
+
 	const userRepository = getRepository(User);
-	const users = await userRepository.find({ relations: ['roles', 'permissions'] });
-	return users;
+
+	const [data, total] = await userRepository.findAndCount({
+		relations: ['roles', 'permissions'],
+		skip: page * limit,
+		take: limit,
+	});
+
+	return {
+		result: data,
+		total,
+		pages: Math.ceil(total / limit),
+		currentPage,
+	};
 };
 
 export const show = async (uuid: string): Promise<User> => {

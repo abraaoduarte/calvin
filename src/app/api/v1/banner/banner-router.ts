@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { CreateBannerSchema, UpdateBannerSchema } from 'domains/banner/banner-schema';
-import { validate } from 'app/middlewares/validate';
+import { validate, auth } from 'app/middlewares';
 import { makeUuidSchema } from 'domains/common/common-schema';
 import * as controller from './banner-controller';
 
@@ -18,6 +18,6 @@ router.patch(
 );
 router.delete('/:uuid', validate.params(makeUuidSchema('uuid')), controller.destroy);
 
-base.use('/banners', router);
+base.use('/banners', auth(), router);
 
 export { base as router };

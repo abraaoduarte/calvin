@@ -2,13 +2,14 @@ import { Request } from 'express';
 import * as quoteRepository from 'domains/quote/quote-repository';
 import { wrap } from 'utils/wrap';
 
-export const index = wrap(() =>
-	quoteRepository.index().then((quote) => ({
-		body: {
-			message: 'success',
-			result: quote,
-		},
-	}))
+export const index = wrap((req: Request) =>
+	quoteRepository.index(req.query).then((quotes) => ({
+			body: {
+				message: 'success',
+				...quotes,
+			},
+		})
+	)
 );
 
 export const show = wrap((req: Request) =>

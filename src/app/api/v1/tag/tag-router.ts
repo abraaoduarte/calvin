@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { CreateTagSchema, UpdateTagSchema } from 'domains/tag/tag-schema';
-import { validate } from 'app/middlewares/validate';
+import { validate, auth } from 'app/middlewares';
 import { makeUuidSchema } from 'domains/common/common-schema';
 import * as controller from './tag-controller';
 
@@ -18,6 +18,6 @@ router.patch(
 );
 router.delete('/:uuid', validate.params(makeUuidSchema('uuid')), controller.destroy);
 
-base.use('/tags', router);
+base.use('/tags', auth(), router);
 
 export { base as router };

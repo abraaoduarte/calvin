@@ -2,13 +2,14 @@ import { Request } from 'express';
 import * as roleRepository from 'domains/role/role-repository';
 import { wrap } from 'utils/wrap';
 
-export const index = wrap(() =>
-	roleRepository.index().then((roles) => ({
-		body: {
-			message: 'success',
-			result: roles,
-		},
-	}))
+export const index = wrap((req: Request) =>
+	roleRepository.index(req.query).then((roles) => ({
+			body: {
+				message: 'success',
+				...roles,
+			},
+		})
+	)
 );
 
 export const show = wrap((req: Request) =>

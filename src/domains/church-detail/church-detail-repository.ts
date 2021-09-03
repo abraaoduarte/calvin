@@ -2,11 +2,26 @@ import { getRepository } from 'typeorm';
 import { ChurchDetail } from 'infra/database/entities/ChurchDetail';
 import { isEmpty, isNil } from 'ramda';
 import { Request } from 'express';
+import pagination from 'utils/pagination';
+import { ParsedQs } from 'qs';
+import { RepositoryList } from 'types';
 
-export const index = async (): Promise<ChurchDetail[]> => {
+export const index = async (query: ParsedQs): Promise<RepositoryList<ChurchDetail[]>> => {
+	const { page, limit, currentPage } = pagination(query);
+
 	const churchDetailRepository = getRepository(ChurchDetail);
-	const churchDetails = await churchDetailRepository.find();
-	return churchDetails;
+
+	const [data, total] = await churchDetailRepository.findAndCount({
+		skip: page * limit,
+		take: limit,
+	});
+
+	return {
+		result: data,
+		total,
+		pages: Math.ceil(total / limit),
+		currentPage,
+	};
 };
 
 export const show = async (uuid: string): Promise<ChurchDetail> => {
