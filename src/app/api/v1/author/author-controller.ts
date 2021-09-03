@@ -3,20 +3,20 @@ import * as authorRepository from 'domains/author/author-repository';
 import { wrap } from 'utils/wrap';
 import { CustomRequest } from 'types/CustomRequest';
 
-export const index = wrap(() =>
-	authorRepository.index().then((author) => ({
+export const index = wrap((req: Request) =>
+	authorRepository.index(req.query).then((authors) => ({
 		body: {
 			message: 'success',
-			result: author,
+			...authors,
 		},
 	}))
 );
 
 export const show = wrap((req: Request) =>
-	authorRepository.show(req.params.uuid).then((authors) => ({
+	authorRepository.show(req.params.uuid).then((author) => ({
 		body: {
 			message: 'success',
-			result: authors,
+			result: author,
 		},
 	}))
 );
