@@ -7,9 +7,12 @@ import {
 	CreateDateColumn,
 	OneToOne,
 	JoinColumn,
+	ManyToMany,
+	JoinTable,
 } from 'typeorm';
 import { Author } from './Author';
 import { User } from './User';
+import { Tag } from './Tag';
 
 export type ArticleStatus = 'draft' | 'published';
 
@@ -36,6 +39,20 @@ export class Article {
 	@OneToOne(() => User, (user) => user)
 	@JoinColumn({ name: 'user_id' })
 	user: User;
+
+	@ManyToMany(() => Tag, (tag) => tag.articles)
+	@JoinTable({
+		name: 'article_tag',
+		joinColumn: {
+			name: 'article_id',
+			referencedColumnName: 'id',
+		},
+		inverseJoinColumn: {
+			name: 'tag_id',
+			referencedColumnName: 'id',
+		},
+	})
+	tags: Tag[];
 
 	@OneToOne(() => Author, (author) => author)
 	@JoinColumn({ name: 'author_id' })
