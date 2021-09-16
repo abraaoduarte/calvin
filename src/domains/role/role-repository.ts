@@ -2,11 +2,27 @@ import { getRepository } from 'typeorm';
 import { Role } from 'infra/database/entities/Role';
 import { isEmpty, isNil } from 'ramda';
 import { Request } from 'express';
+import pagination from 'utils/pagination';
+import { ParsedQs } from 'qs';
+import { RepositoryList } from 'types';
 
-export const index = async (): Promise<Role[]> => {
+export const index = async (query: ParsedQs): Promise<RepositoryList<Role[]>> => {
+	const { page, limit, currentPage } = pagination(query);
+
 	const roleRepository = getRepository(Role);
-	const roles = await roleRepository.find({ relations: ['users', 'permissions'] });
-	return roles;
+
+	const [data, total] = await roleRepository.findAndCount({
+		relations: ['users', 'permissions'],
+		skip: page * limit,
+		take: limit,
+	});
+
+	return {
+		result: data,
+		total,
+		pages: Math.ceil(total / limit),
+		currentPage,
+	};
 };
 
 export const show = async (uuid: string): Promise<Role> => {

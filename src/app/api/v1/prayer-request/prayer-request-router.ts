@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { CreatePrayerRequestSchema, UpdatePrayerRequestSchema } from 'domains/prayer-request/prayer-request-schema';
-import { validate } from 'app/middlewares/validate';
+import { validate, auth } from 'app/middlewares';
 import { makeUuidSchema } from 'domains/common/common-schema';
 import * as controller from './prayer-request-controller';
 
@@ -18,6 +18,6 @@ router.patch(
 );
 router.delete('/:uuid', validate.params(makeUuidSchema('uuid')), controller.destroy);
 
-base.use('/prayer-requests', router);
+base.use('/prayer-requests', auth(), router);
 
 export { base as router };

@@ -2,13 +2,14 @@ import { Request } from 'express';
 import * as bankDetailRepository from 'domains/bank-detail/bank-detail-repository';
 import { wrap } from 'utils/wrap';
 
-export const index = wrap(() =>
-	bankDetailRepository.index().then((bankDetails) => ({
-		body: {
-			message: 'success',
-			result: bankDetails,
-		},
-	}))
+export const index = wrap((req: Request) =>
+	bankDetailRepository.index(req.query).then((bankDetails) => ({
+			body: {
+				message: 'success',
+				...bankDetails,
+			},
+		})
+	)
 );
 
 export const show = wrap((req: Request) =>

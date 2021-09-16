@@ -2,11 +2,27 @@ import { getRepository } from 'typeorm';
 import { Permission } from 'infra/database/entities/Permission';
 import { isEmpty, isNil } from 'ramda';
 import { Request } from 'express';
+import pagination from 'utils/pagination';
+import { ParsedQs } from 'qs';
+import { RepositoryList } from 'types';
 
-export const index = async (): Promise<Permission[]> => {
+export const index = async (query: ParsedQs): Promise<RepositoryList<Permission[]>> => {
+	const { page, limit, currentPage } = pagination(query);
+
 	const permissionRepository = getRepository(Permission);
-	const permissions = await permissionRepository.find({ relations: ['roles', 'users'] });
-	return permissions;
+
+	const [data, total] = await permissionRepository.findAndCount({
+		relations: ['roles', 'users'],
+		skip: page * limit,
+		take: limit,
+	});
+
+	return {
+		result: data,
+		total,
+		pages: Math.ceil(total / limit),
+		currentPage,
+	};
 };
 
 export const show = async (uuid: string): Promise<Permission> => {

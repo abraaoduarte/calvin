@@ -2,13 +2,14 @@ import { Request } from 'express';
 import * as photoRepository from 'domains/photo/photo-repository';
 import { wrap } from 'utils/wrap';
 
-export const index = wrap(() =>
-	photoRepository.index().then((photo) => ({
-		body: {
-			message: 'success',
-			result: photo,
-		},
-	}))
+export const index = wrap((req: Request) =>
+	photoRepository.index(req.query).then((photos) => ({
+			body: {
+				message: 'success',
+				...photos,
+			},
+		})
+	)
 );
 
 export const show = wrap((req: Request) =>

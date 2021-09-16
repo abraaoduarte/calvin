@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { validate } from 'app/middlewares/validate';
+import { validate, auth } from 'app/middlewares';
 import { CreatePermissionSchema, UpdatePermissionSchema } from 'domains/permission/permission-schema';
 import { makeUuidSchema } from 'domains/common/common-schema';
 import * as controller from './permission-controller';
@@ -18,6 +18,6 @@ router.patch(
 );
 router.delete('/:uuid', validate.params(makeUuidSchema('uuid')), controller.destroy);
 
-base.use('/permissions', router);
+base.use('/permissions', auth(), router);
 
 export { base as router };

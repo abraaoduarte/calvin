@@ -2,47 +2,48 @@ import { Request } from 'express';
 import * as videoRepository from 'domains/video/video-repository';
 import { wrap } from 'utils/wrap';
 
-export const index = wrap(() =>
-	videoRepository.index().then((videos) => ({
-		body: {
-			message: 'success',
-			result: videos,
-		},
-	}))
+export const index = wrap((req: Request) =>
+	videoRepository.index(req.query).then((videos) => ({
+			body: {
+				message: 'success',
+				...videos,
+			},
+		})
+	)
 );
 
 export const show = wrap((req: Request) =>
-	videoRepository.show(req.params.uuid).then((videos) => ({
+	videoRepository.show(req.params.uuid).then((video) => ({
 		body: {
 			message: 'success',
-			result: videos,
+			result: video,
 		},
 	}))
 );
 
 export const create = wrap((req: Request) =>
-	videoRepository.create(req).then((videos) => ({
+	videoRepository.create(req).then((video) => ({
 		body: {
 			message: 'success',
-			result: videos,
+			result: video,
 		},
 	}))
 );
 
 export const update = wrap((req: Request) =>
-	videoRepository.update(req).then((videos) => ({
+	videoRepository.update(req).then((video) => ({
 		body: {
 			message: 'success',
-			result: videos,
+			result: video,
 		},
 	}))
 );
 
 export const destroy = wrap((req: Request) =>
-	videoRepository.destroy(req.params.uuid).then((videos) => ({
+	videoRepository.destroy(req.params.uuid).then((video) => ({
 		body: {
 			message: 'success',
-			result: videos,
+			result: video,
 		},
 	}))
 );

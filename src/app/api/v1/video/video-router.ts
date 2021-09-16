@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { CreateVideoSchema, UpdateVideoSchema } from 'domains/video/video-schema';
-import { validate } from 'app/middlewares/validate';
+import { validate, auth } from 'app/middlewares';
 import { makeUuidSchema } from 'domains/common/common-schema';
 import * as controller from './video-controller';
 
@@ -18,6 +18,6 @@ router.patch(
 );
 router.delete('/:uuid', validate.params(makeUuidSchema('uuid')), controller.destroy);
 
-base.use('/videos', router);
+base.use('/videos', auth(), router);
 
 export { base as router };

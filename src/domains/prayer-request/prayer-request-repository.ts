@@ -2,11 +2,27 @@ import { getRepository } from 'typeorm';
 import { PrayerRequest } from 'infra/database/entities/PrayerRequest';
 import { isEmpty, isNil } from 'ramda';
 import { Request } from 'express';
+import pagination from 'utils/pagination';
+import { ParsedQs } from 'qs';
+import { RepositoryList } from 'types';
 
-export const index = async (): Promise<PrayerRequest[]> => {
+export const index = async (query: ParsedQs): Promise<RepositoryList<PrayerRequest[]>> => {
+	const { page, limit, currentPage } = pagination(query);
+
 	const prayerRequestRepository = getRepository(PrayerRequest);
-	const prayerRequests = await prayerRequestRepository.find({ relations: ['user'] });
-	return prayerRequests;
+
+	const [data, total] = await prayerRequestRepository.findAndCount({
+		relations: ['user'],
+		skip: page * limit,
+		take: limit,
+	});
+
+	return {
+		result: data,
+		total,
+		pages: Math.ceil(total / limit),
+		currentPage,
+	};
 };
 
 export const show = async (uuid: string): Promise<PrayerRequest> => {

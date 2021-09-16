@@ -2,11 +2,27 @@ import { getRepository } from 'typeorm';
 import { Banner } from 'infra/database/entities/Banner';
 import { isEmpty, isNil } from 'ramda';
 import { Request } from 'express';
+import pagination from 'utils/pagination';
+import { ParsedQs } from 'qs';
+import { RepositoryList } from 'types';
 
-export const index = async (): Promise<Banner[]> => {
+export const index = async (query: ParsedQs): Promise<RepositoryList<Banner[]>> => {
+	const { page, limit, currentPage } = pagination(query);
+
 	const bannerRepository = getRepository(Banner);
-	const banners = await bannerRepository.find({ relations: ['user'] });
-	return banners;
+
+	const [data, total] = await bannerRepository.findAndCount({
+		relations: ['user'],
+		skip: page * limit,
+		take: limit,
+	});
+
+	return {
+		result: data,
+		total,
+		pages: Math.ceil(total / limit),
+		currentPage,
+	};
 };
 
 export const show = async (uuid: string): Promise<Banner> => {

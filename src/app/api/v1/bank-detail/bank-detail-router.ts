@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { CreateBankDetailSchema, UpdateBankDetailSchema } from 'domains/bank-detail/bank-detail-schema';
-import { validate } from 'app/middlewares/validate';
+import { validate, auth } from 'app/middlewares';
 import { makeUuidSchema } from 'domains/common/common-schema';
 import * as controller from './bank-detail-controller';
 
@@ -18,6 +18,6 @@ router.patch(
 );
 router.delete('/:uuid', validate.params(makeUuidSchema('uuid')), controller.destroy);
 
-base.use('/bank-details', router);
+base.use('/bank-details', auth(), router);
 
 export { base as router };

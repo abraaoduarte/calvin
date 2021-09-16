@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { validate } from 'app/middlewares/validate';
+import { validate, auth } from 'app/middlewares';
 import { CreateChurchDetailSchema, UpdateChurchDetailSchema } from 'domains/church-detail/church-detail-schema';
 import { makeUuidSchema } from 'domains/common/common-schema';
 import * as controller from './church-detail-controller';
@@ -18,6 +18,6 @@ router.patch(
 );
 router.delete('/:uuid', validate.params(makeUuidSchema('uuid')), controller.destroy);
 
-base.use('/church-details', router);
+base.use('/church-details', auth(), router);
 
 export { base as router };

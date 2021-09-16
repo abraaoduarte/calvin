@@ -2,11 +2,27 @@ import { getRepository } from 'typeorm';
 import { Quote } from 'infra/database/entities/Quote';
 import { isEmpty, isNil } from 'ramda';
 import { Request } from 'express';
+import pagination from 'utils/pagination';
+import { ParsedQs } from 'qs';
+import { RepositoryList } from 'types';
 
-export const index = async (): Promise<Quote[]> => {
+export const index = async (query: ParsedQs): Promise<RepositoryList<Quote[]>> => {
+	const { page, limit, currentPage } = pagination(query);
+
 	const quoteRepository = getRepository(Quote);
-	const quotes = await quoteRepository.find({ relations: ['user'] });
-	return quotes;
+
+	const [data, total] = await quoteRepository.findAndCount({
+		relations: ['user'],
+		skip: page * limit,
+		take: limit,
+	});
+
+	return {
+		result: data,
+		total,
+		pages: Math.ceil(total / limit),
+		currentPage,
+	};
 };
 
 export const show = async (uuid: string): Promise<Quote> => {

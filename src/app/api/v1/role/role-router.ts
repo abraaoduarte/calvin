@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { validate } from 'app/middlewares/validate';
+import { validate, auth } from 'app/middlewares';
 import { CreateRoleSchema, UpdateRoleSchema } from 'domains/role/role-schema';
 import { makeUuidSchema } from 'domains/common/common-schema';
 import * as controller from './role-controller';
@@ -18,6 +18,6 @@ router.patch(
 );
 router.delete('/:uuid', validate.params(makeUuidSchema('uuid')), controller.destroy);
 
-base.use('/roles', router);
+base.use('/roles', auth(), router);
 
 export { base as router };

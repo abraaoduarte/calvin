@@ -2,11 +2,27 @@ import { getRepository } from 'typeorm';
 import { Video } from 'infra/database/entities/Video';
 import { isEmpty, isNil } from 'ramda';
 import { Request } from 'express';
+import pagination from 'utils/pagination';
+import { ParsedQs } from 'qs';
+import { RepositoryList } from 'types';
 
-export const index = async (): Promise<Video[]> => {
+export const index = async (query: ParsedQs): Promise<RepositoryList<Video[]>> => {
+	const { page, limit, currentPage } = pagination(query);
+
 	const videoRepository = getRepository(Video);
-	const videos = await videoRepository.find({ relations: ['user'] });
-	return videos;
+
+	const [data, total] = await videoRepository.findAndCount({
+		relations: ['user'],
+		skip: page * limit,
+		take: limit,
+	});
+
+	return {
+		result: data,
+		total,
+		pages: Math.ceil(total / limit),
+		currentPage,
+	};
 };
 
 export const show = async (uuid: string): Promise<Video> => {

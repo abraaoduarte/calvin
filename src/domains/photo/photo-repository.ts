@@ -2,11 +2,27 @@ import { getRepository } from 'typeorm';
 import { Photo } from 'infra/database/entities/Photo';
 import { isEmpty, isNil } from 'ramda';
 import { Request } from 'express';
+import pagination from 'utils/pagination';
+import { ParsedQs } from 'qs';
+import { RepositoryList } from 'types';
 
-export const index = async (): Promise<Photo[]> => {
+export const index = async (query: ParsedQs): Promise<RepositoryList<Photo[]>> => {
+	const { page, limit, currentPage } = pagination(query);
+
 	const photoRepository = getRepository(Photo);
-	const photos = await photoRepository.find({ relations: ['user'] });
-	return photos;
+
+	const [data, total] = await photoRepository.findAndCount({
+		relations: ['user'],
+		skip: page * limit,
+		take: limit,
+	});
+
+	return {
+		result: data,
+		total,
+		pages: Math.ceil(total / limit),
+		currentPage,
+	};
 };
 
 export const show = async (uuid: string): Promise<Photo> => {
